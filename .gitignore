@@ -1,0 +1,25 @@
+# 依赖
+node_modules/
+.pnpm-store/
+
+# 构建产物
+dist/
+build/
+out/
+
+# 环境与密钥（绝不提交）
+.env
+.env.*
+*.pem
+*.key
+
+# 系统 / 编辑器
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+
+# 日志与临时文件
+*.log
+*.tmp
