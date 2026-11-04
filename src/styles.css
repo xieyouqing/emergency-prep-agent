@@ -1,0 +1,128 @@
+:root {
+  color-scheme: light;
+  --bg: #f7f6f2;
+  --fg: #1f2328;
+  --line: #d8d4cb;
+  --primary: #1f6f43;
+  --primary-fg: #ffffff;
+}
+
+* { box-sizing: border-box; }
+
+html, body, #root {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: -apple-system, "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+  font-size: 18px;
+  line-height: 1.5;
+  -webkit-text-size-adjust: 100%;
+}
+
+.screen {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+  padding: 64px 20px calc(24px + env(safe-area-inset-bottom));
+  gap: 16px;
+}
+
+.progress {
+  margin: 0;
+  font-size: 16px;
+  color: #5b6169;
+}
+
+.item-name {
+  margin: 0;
+  font-size: 28px;
+  line-height: 1.35;
+}
+
+.hint {
+  margin: 0;
+  font-size: 20px;
+  color: #33383f;
+}
+
+.actions {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.btn {
+  appearance: none;
+  display: block;
+  text-align: center;
+  text-decoration: none;
+  border: 1px solid var(--primary);
+  background: var(--primary);
+  color: var(--primary-fg);
+  border-radius: 12px;
+  padding: 18px 16px;
+  font-size: 22px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn:active { transform: scale(0.99); }
+
+.btn-ghost {
+  background: transparent;
+  color: var(--primary);
+}
+
+.scroll {
+  flex: 1;
+  overflow-y: auto;
+  border-top: 1px solid var(--line);
+  padding-top: 12px;
+}
+
+.group-title {
+  margin: 16px 0 6px;
+  font-size: 18px;
+  color: #33383f;
+}
+
+.list {
+  margin: 0;
+  padding-left: 22px;
+}
+
+.next-one {
+  font-size: 22px;
+  font-weight: 700;
+  margin: 6px 0 12px;
+}
+
+.top-chips {
+  position: fixed;
+  top: 10px;
+  left: 12px;
+  right: 12px;
+  z-index: 20;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  pointer-events: none;
+}
+
+.chip {
+  pointer-events: auto;
+  border: 1px solid var(--line);
+  background: #ffffff;
+  color: var(--fg);
+  border-radius: 999px;
+  padding: 8px 16px;
+  font-size: 16px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
