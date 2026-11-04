@@ -32,7 +32,7 @@ body {
   width: 100%;
   max-width: 560px;
   min-height: 100dvh;
-  padding: 24px 20px calc(24px + env(safe-area-inset-bottom));
+  padding: 64px 20px calc(24px + env(safe-area-inset-bottom)); /* 顶部常驻区留位 */
   gap: 16px;
 }
 
@@ -106,3 +106,26 @@ body {
 /* 题目屏的判据说明与结果页的复核依据 */
 .hint-sub { margin: -8px 0 0; font-size: 15px; color: #5b6169; }
 .li-check { display: block; font-size: 15px; line-height: 1.4; color: #5b6169; }
+
+
+/* 下一步一件事：放在滚动区之外，首屏必须可见 */
+.next-box {
+  border: 2px solid var(--primary);
+  border-radius: 12px;
+  padding: 12px 14px;
+  background: #ffffff;
+}
+.next-label { margin: 0; font-size: 15px; color: #5b6169; }
+.next-box .next-one { margin: 4px 0 0; font-size: 20px; line-height: 1.4; }
+
+/* 判据是推断时的提示与标签 */
+.hint-sub.warn { color: #a15c00; }
+.li-tag {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 1px 6px;
+  border-radius: 6px;
+  background: #f3e2c6;
+  color: #7a4b00;
+  font-size: 13px;
+}

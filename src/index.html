@@ -8,8 +8,13 @@
   </head>
   <body>
     <div id="root"></div>
-    <script src="data.js"></script>
-    <script src="render.js"></script>
+    <!-- 加载顺序即依赖顺序：core → check → emergency → app -->
+    <script src="core/store.js"></script>
+    <script src="core/chips.js"></script>
+    <script src="check/data.js"></script>
+    <script src="check/logic.js"></script>
+    <script src="check/render.js"></script>
+    <script src="emergency/render.js"></script>
     <script src="app.js"></script>
   </body>
 </html>
