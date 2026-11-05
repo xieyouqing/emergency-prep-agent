@@ -30,8 +30,29 @@ const RELOAD_CLIENT = `<script>
 
 const clients = new Set()
 
+// /ask、/health 代理到日常问答后端（生产由 Nginx 做同样的事）
+const API_TARGET = { host: '127.0.0.1', port: 8001 }
+
+function proxyToApi(req, res) {
+  const opts = { host: API_TARGET.host, port: API_TARGET.port, path: req.url, method: req.method, headers: req.headers }
+  const upstream = http.request(opts, (up) => {
+    res.writeHead(up.statusCode || 502, up.headers)
+    up.pipe(res)
+  })
+  upstream.on('error', () => {
+    res.writeHead(502, { 'Content-Type': 'application/json; charset=utf-8' })
+    res.end(JSON.stringify({ error: 'backend unreachable' }))
+  })
+  req.pipe(upstream)
+}
+
 const server = http.createServer((req, res) => {
   const url = decodeURIComponent((req.url || '/').split('?')[0])
+
+  if (url.startsWith('/ask') || url.startsWith('/health')) {
+    proxyToApi(req, res)
+    return
+  }
 
   if (url === '/__reload') {
     res.writeHead(200, {

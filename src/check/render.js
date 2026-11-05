@@ -37,6 +37,90 @@ Render.unsure = function (item, index, total) {
     '</section>';
 };
 
+// 主页：查过一轮之后停留在这里（不是每次都被拉回第 1 项）
+// 主操作 2 个（开始/继续、看看清单），辅助 chip 2 个（急事、问个事）
+Render.home = function (info) {
+  // 主操作最多 3 个：静音时用「恢复提醒」占掉一格，就不再显示「家人号码」
+  var resume = info.muted
+    ? '<button class="btn btn-ghost" data-remind-resume="1">恢复提醒</button>'
+    : '<button class="btn btn-ghost" data-contacts="1">家人号码</button>';
+  var note = info.muted
+    ? '<p class="hint-sub">提醒已关闭，想恢复点下面。</p>'
+    : '';
+  return '' +
+    '<section class="screen">' +
+    '  <p class="progress">家庭应急自查</p>' +
+    '  <div class="next-box">' +
+    '    <p class="next-label">上次检查</p>' +
+    '    <p class="next-one">' + info.lastText + '</p>' +
+    '  </div>' +
+    note +
+    '  <div class="actions">' +
+    '    <button class="btn" data-start="1">' + info.startText + '</button>' +
+    '    <button class="btn btn-ghost" data-show-list="1">看看清单</button>' +
+    resume +
+    '  </div>' +
+    '</section>';
+};
+
+// 顺手看一眼（T8）：轮末逐项过一件高失效风险物品，两个按钮
+// 「换新」只进待采购，不进入三分支判断（docs/01 §4）
+Render.maint = function (item, index, total) {
+  return '' +
+    '<section class="screen">' +
+    '  <p class="progress">顺手看一眼 · ' + (index + 1) + ' / ' + total + '</p>' +
+    '  <h1 class="item-name">' + item.name + '</h1>' +
+    '  <p class="hint">' + item.check + '</p>' +
+    '  <div class="actions">' +
+    '    <button class="btn" data-maint="ok">还好，不用换</button>' +
+    '    <button class="btn btn-ghost" data-maint="bad">该换新的了</button>' +
+    '  </div>' +
+    '</section>';
+};
+
+// 联系人屏：既是「首次发短信的引导」，也是「主动管理入口」（主页第 3 个主操作）
+// mode: 'send'（存完立即发送）/ 'manage'（只管号码）
+Render.contact = function (opts) {
+  opts = opts || {};
+  var c = (opts.contacts && opts.contacts[0]) || { name: '', tel: '' };
+  var list = (opts.contacts || []).length
+    ? '<p class="hint">已存：' + opts.contacts.map(function (x) { return x.name + ' ' + x.tel; }).join('；') + '</p>'
+    : '<p class="hint">还没存号码。存一次，以后发短信自动带上。</p>';
+  var hint = opts.hint ? '<p class="hint-sub warn">' + opts.hint + '</p>' : '';
+  var saveText = opts.mode === 'send' ? '保存并发送' : '保存';
+  var del = (opts.contacts || []).length
+    ? '<button class="btn btn-ghost" data-del-contact="1">删除号码</button>'
+    : '';
+  return '' +
+    '<section class="screen">' +
+    '  <p class="progress">家人号码</p>' +
+    '  <h1 class="item-name">发给谁？</h1>' +
+    list + hint +
+    '  <input id="tel" class="ask-input" type="tel" inputmode="numeric" placeholder="手机号或固话" value="' + c.tel + '" />' +
+    '  <input id="cname" class="ask-input" type="text" placeholder="怎么称呼（可不填）" value="' + c.name + '" />' +
+    '  <div class="actions">' +
+    '    <button class="btn" data-save-contact="1">' + saveText + '</button>' +
+    del +
+    '    <button class="btn btn-ghost" data-home="1">返回</button>' +
+    '  </div>' +
+    '</section>';
+};
+
+// 提醒屏：到期了才出现，主操作恰好 3 个（现在查 / 稍后 / 别再问）
+Render.remind = function (days) {
+  return '' +
+    '<section class="screen">' +
+    '  <p class="progress">该检查了</p>' +
+    '  <h1 class="item-name">上次检查是 ' + days + ' 天前</h1>' +
+    '  <p class="hint">过一遍大概几分钟，顺手看一眼有没有过期的、缺的。</p>' +
+    '  <div class="actions">' +
+    '    <button class="btn" data-remind-now="1">现在查</button>' +
+    '    <button class="btn" data-remind-snooze="1">稍后（明天再说）</button>' +
+    '    <button class="btn btn-ghost" data-remind-mute="1">别再问了</button>' +
+    '  </div>' +
+    '</section>';
+};
+
 Render.result = function (groups, next) {
   return '' +
     '<section class="screen">' +
@@ -57,6 +141,7 @@ Render.result = function (groups, next) {
       ? '    <button class="btn" data-forward="1">发给家人代办</button>'
       : '') +
     '    <button class="btn btn-ghost" data-restart="1">再查一遍</button>' +
+    '    <button class="btn btn-ghost" data-home="1">回到主页</button>' +
     '  </div>' +
     '</section>';
 };

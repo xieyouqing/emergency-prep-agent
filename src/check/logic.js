@@ -40,6 +40,19 @@ function firstUnansweredIndex(items, answers) {
   return -1;
 }
 
+// 「顺手看一眼」（T8）：轮末固定检查的高失效风险条目（docs/01 §4 时效维护）
+// 3–5 项：药品、食品饮水、医用材料、灭火器
+var MAINTENANCE_IDS = ['medicine', 'food', 'firstaid', 'extinguisher'];
+
+function maintItems(items) {
+  return MAINTENANCE_IDS
+    .map(function (id) {
+      for (var i = 0; i < items.length; i++) if (items[i].id === id) return items[i];
+      return null;
+    })
+    .filter(Boolean);
+}
+
 // 代办消息：三类内容都带上（docs/03 T7 验收 #5）
 function buildMessage(groups) {
   var names = function (list) {
